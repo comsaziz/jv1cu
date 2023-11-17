@@ -50,70 +50,62 @@ aziz();
 aziz();
 */
 let books = [
-    [1, "Book 1", "Author 1", 20, 50],
-    [2, "Book 2", "Author 2", 25, 30],
-    [3, "Book 3", "Author 3", 30, 40]
+    { id: 1, title: "Book 1", author: "Aziz 1", price: 20, quantity: 50 },
+    { id: 2, title: "Book 2", author: "Aziz 2", price: 25, quantity: 30 },
+    { id: 3, title: "Book 3", author: "Aziz 3", price: 30, quantity: 40 }
 ];
 
-// Function to display all books
+
 function displayBooks() {
     console.log("Book Id | Book Title | Author | Price | Quantity");
     console.log("--------------------------------------------");
-    for (let i = 0; i < books.length; i++) {
-        console.log(books[i].join(" | "));
-    }
+    books.forEach(book => {
+        console.log(`${book.id} | ${book.title} | ${book.author} | $${book.price} | ${book.quantity}`);
+    });
 }
 
-// Function to add a new book
-function addBook(book) {
-    books.push(book);
+
+function addBook(id, title, author, price, quantity) {
+    books.push({ id, title, author, price, quantity });
 }
 
-// Function to find a book by Book Id, Title, or Author
+
 function findBook(query) {
-    for (let i = 0; i < books.length; i++) {
-        if (
-            books[i][0] === query ||
-            books[i][1].toLowerCase() === query.toLowerCase() ||
-            books[i][2].toLowerCase() === query.toLowerCase()
-        ) {
-            return books[i];
-        }
-    }
-    return null; // Book not found
+    return books.find(book => 
+        book.id === query ||
+        book.title.toLowerCase() === query.toLowerCase() ||
+        book.author.toLowerCase() === query.toLowerCase()
+    );
 }
 
-// Function to sell books and generate an invoice
 function sellBooks(title, quantity, balance) {
     const book = findBook(title);
-    if (book && book[4] >= quantity && book[3] * quantity <= balance) {
-        book[4] -= quantity; // Reduce stock
-        const totalCost = book[3] * quantity;
-        console.log(`Invoice:\nBook Title: ${book[1]}\nQuantity: ${quantity}\nTotal Cost: $${totalCost}`);
+    if (book && book.quantity >= quantity && book.price * quantity <= balance) {
+        book.quantity -= quantity; // Reduce stock
+        const totalCost = book.price * quantity;
+        console.log(`Invoice:\nBook Title: ${book.title}\nQuantity: ${quantity}\nTotal Cost: $${totalCost}`);
     } else {
         console.log("Unable to process the sale. Check book availability and balance.");
     }
 }
 
-// Example usage
+
 displayBooks();
 
-// Add a new book
-addBook([4, "Book 4", "Author 4", 35, 20]);
+
+addBook(4, "Book 4", "Author 4", 35, 20);
 
 console.log("\nAfter adding a new book:");
 displayBooks();
 
-// Query for a book
 const bookQuery = findBook("Book 2");
 console.log("\nQuery Result for Book 2:", bookQuery);
 
-// Sell books and generate an invoice
+
 sellBooks("Book 1", 10, 300);
 
 console.log("\nAfter selling 10 copies of Book 1:");
-displayBooks();
-
+displayBooks()
 
 
 
